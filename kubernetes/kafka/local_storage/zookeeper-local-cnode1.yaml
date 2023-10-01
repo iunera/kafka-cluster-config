@@ -1,0 +1,30 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: zookeeper-local-cnode1
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: zookeeper-local-cnode1-pv
+spec:
+  capacity:
+    storage: 20Gi
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: zookeeper-local-cnode1
+  local:
+    path: /mnt/k8s/pv/zookeeper-local-cnode1-pv
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - cnode1
+---
