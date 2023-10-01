@@ -1,0 +1,35 @@
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: akhq
+  namespace: akhq
+spec:
+  releaseName: akhq
+  targetNamespace: akhq
+  chart:
+    spec:
+      chart: akhq
+      version: ">=0.24.0"
+      sourceRef:
+        kind: HelmRepository
+        name: akhq-helm
+        namespace: akhq
+  interval: 1m0s
+  install:
+    createNamespace: false
+
+  values:
+    configuration:
+      micronaut:
+        server:
+          cors:
+            enabled: true
+            configurations:
+              all:
+                allowedOrigins:
+                  - "*"
+      akhq:
+        connections:
+          local:
+            properties:
+              bootstrap.servers: "iunerakafkacluster-kafka-bootstrap.kafka:9092"

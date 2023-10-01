@@ -1,0 +1,40 @@
+# helm upgrade -i --wait --create-namespace -n cmak cmak-operator oci://ghcr.io/eshepelyuk/helm/cmak-operator --values 
+
+apiVersion: helm.toolkit.fluxcd.io/v2beta1
+kind: HelmRelease
+metadata:
+  name: cmak-operator
+  namespace: cmak
+spec:
+  releaseName: cmak-operator 
+  targetNamespace: cmak
+  chart:
+    spec:
+      chart: cmak-operator
+      version: ">=2.2.2"
+      sourceRef:
+        kind: HelmRepository
+        name: eshepelyuk-helm
+        namespace: cmak
+  interval: 1m0s
+  install:
+    createNamespace: false
+
+  values:
+    cmak:
+      clustersCommon:
+        curatorConfig:
+          zkMaxRetry: 100 # <1>
+      clusters:
+        - name: "iunerakafkacluster"
+          kafkaVersion: "3.1.0" # <2>
+          curatorConfig:
+            zkConnect: "zoo-entrance.kafka:2181"
+
+    reconcile:
+      image:
+        pullPolicy: IfNotPresent
+      schedule: "*/30 * * * *"
+      overwriteZk: true
+      successfulJobsHistoryLimit: 0
+      failedJobsHistoryLimit: 1
