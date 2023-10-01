@@ -1,0 +1,30 @@
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: kafka-local-cnode1
+provisioner: kubernetes.io/no-provisioner
+volumeBindingMode: WaitForFirstConsumer
+---
+apiVersion: v1
+kind: PersistentVolume
+metadata:
+  name: kafka-local-cnode1-pv
+spec:
+  capacity:
+    storage: 1Ti
+  accessModes:
+  - ReadWriteOnce
+  persistentVolumeReclaimPolicy: Retain
+  storageClassName: kafka-local-cnode1
+  local:
+    path: /mnt/k8s/pv/kafka-local-cnode1-pv
+  nodeAffinity:
+    required:
+      nodeSelectorTerms:
+      - matchExpressions:
+        - key: kubernetes.io/hostname
+          operator: In
+          values:
+          - cnode1
+---
