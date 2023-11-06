@@ -13,7 +13,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: strimzi-helm
-        namespace: helmrepos
+        namespace: kafka-operator
   interval: 1m0s
   install:
     createNamespace: false
