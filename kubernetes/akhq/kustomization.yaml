@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - akhq.ns.yaml
   - akhq-helm.repo.yaml
-  # - akhq.helm.yaml
+  - akhq.helm.yaml

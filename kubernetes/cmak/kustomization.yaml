@@ -3,4 +3,4 @@ kind: Kustomization
 resources:
   - cmak.ns.yaml
   - eshepelyuk-helm.repo.yaml
-  # - cmak-operator.helm.yaml
+  - cmak-operator.helm.yaml
