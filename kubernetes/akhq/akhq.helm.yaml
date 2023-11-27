@@ -23,11 +23,11 @@ spec:
       micronaut:
         server:
           cors:
-            enabled: true
-            configurations:
-              all:
-                allowedOrigins:
-                  - "*"
+            enabled: false
+            # configurations:
+            #   all:
+            #     allowedOrigins:
+            #       - "*"
       akhq:
         connections:
           local:
