@@ -10,7 +10,7 @@ In addition the [CMAK (Cluster Manager for Apache Kafka)](https://github.com/yah
 
 
 
-# Install
+# Installation
 The Repo is included in fluxcd with following setup. This installs
 
 * Strimzi operator via helm
@@ -20,6 +20,18 @@ The Repo is included in fluxcd with following setup. This installs
 * CMAK
 
 ```
+---
+apiVersion: source.toolkit.fluxcd.io/v1
+kind: GitRepository
+metadata:
+  name: kafka-cluster-config
+  namespace: flux-system
+spec:
+  interval: 1m0s
+  ref:
+    branch: main
+  timeout: 60s
+  url: ssh://git@github.com/iunera/kafka-cluster-config
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
@@ -33,20 +45,6 @@ spec:
   sourceRef:
     kind: GitRepository
     name: kafka-cluster-config
----
-apiVersion: source.toolkit.fluxcd.io/v1
-kind: GitRepository
-metadata:
-  name: kafka-cluster-config
-  namespace: flux-system
-spec:
-  interval: 1m0s
-  ref:
-    branch: main
-  secretRef:
-    name: kafka-cluster-config
-  timeout: 60s
-  url: ssh://git@github.com/iunera/kafka-cluster-config
 ```
 
 Or use the fluxcd-cli 
